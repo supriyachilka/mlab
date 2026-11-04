@@ -1,0 +1,24 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+df = pd.read_csv("03_iris_dataset 1.csv")
+X = df[["sepal_length_cm"]].values
+y = df["petal_length_cm"].values
+
+for d in [1, 2, 5]:
+    poly = PolynomialFeatures(degree=d)
+    X_poly = poly.fit_transform(X)
+    model = LinearRegression()
+    model.fit(X_poly, y)
+    X_sorted = np.sort(X.flatten()).reshape(-1, 1)
+    plt.plot(X_sorted, model.predict(poly.transform(X_sorted)), label="Degree " + str(d))
+
+plt.scatter(X, y, color="black", label="Actual Data")
+plt.xlabel("Sepal Length")
+plt.ylabel("Petal Length")
+plt.title("Polynomial Regression - Bias vs Variance")
+plt.legend()
+plt.show()

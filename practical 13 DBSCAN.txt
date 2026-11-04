@@ -1,0 +1,18 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import DBSCAN
+
+df = pd.read_csv("14_dbscan_moons_outliers.csv")
+X = df[["feature_1", "feature_2"]].values
+
+model = DBSCAN(eps=0.3, min_samples=5)
+labels = model.fit_predict(X)
+
+print("Labels:", labels)
+print("Outliers:", sum(labels == -1))
+
+plt.scatter(X[:, 0], X[:, 1], c=labels)
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.title("DBSCAN Clustering")
+plt.show()
