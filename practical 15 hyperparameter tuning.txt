@@ -1,0 +1,23 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import GridSearchCV
+from sklearn.tree import DecisionTreeClassifier
+
+df = pd.read_csv("16_iris_dataset.csv")
+X = df[["sepal_length_cm", "sepal_width_cm", "petal_length_cm", "petal_width_cm"]].values
+y = df["target"].values
+
+model = DecisionTreeClassifier(random_state=42)
+params = {"max_depth": [2, 3, 4, 5]}
+
+grid = GridSearchCV(model, params, cv=5)
+grid.fit(X, y)
+
+print("Best Parameters:", grid.best_params_)
+print("Best Accuracy:", grid.best_score_)
+
+plt.plot([2, 3, 4, 5], grid.cv_results_["mean_test_score"], marker="o")
+plt.xlabel("Tree Depth")
+plt.ylabel("CV Accuracy")
+plt.title("Grid Search Results")
+plt.show()

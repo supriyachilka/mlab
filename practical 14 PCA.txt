@@ -1,0 +1,22 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+df = pd.read_csv("15_iris_dataset.csv")
+X = df[["sepal_length_cm", "sepal_width_cm", "petal_length_cm", "petal_width_cm"]].values
+
+X = StandardScaler().fit_transform(X)
+
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+
+print("Original Features:", 4)
+print("Reduced Features:", 2)
+print("Variance Preserved:", sum(pca.explained_variance_ratio_))
+
+plt.scatter(X_pca[:, 0], X_pca[:, 1])
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.title("PCA Visualization")
+plt.show()
